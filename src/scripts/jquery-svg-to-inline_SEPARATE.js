@@ -37,9 +37,9 @@ $.fn.svgToInline = function (options) {
             url: svg.path,
             dataType: 'text',
             success: function (response) {
-                request.element = response.replace(/<[?!][\s\w\"-\/:=?]+>/g, ''),
-                request.svgTag = request.element.match(/<svg[\w\s\t\n:="\\'\/.#-]+>/g);
-                request.svgTagWithoutClass = request.svgTag[0].replace(/class=\"[\w\s-_]+\"/, '');
+                request.element = response.replace(/<[?!][^>]*>/g, ''),
+                request.svgTag = request.element.match(/<svg[^>]*>/g);
+                request.svgTagWithoutClass = request.svgTag[0].replace(/class=\"[^"]*\"/, '');
                 svg.oldClass = request.svgTag[0].match(/class=\"(.*?)\"/);
 
                 // If exist class in svg add to svg.newClass
@@ -49,7 +49,7 @@ $.fn.svgToInline = function (options) {
 
                 request.svgTagWithoutClass = request.svgTagWithoutClass.replace('>', ' ' + svg.newClass + '>');
 
-                svg.currency.replaceWith( request.element.replace(/<svg[\w\s\t\n:="\\'\/.#-]+>/g, request.svgTagWithoutClass) );
+                svg.currency.replaceWith(request.element.replace(/<svg[^>]*>/g, request.svgTagWithoutClass));
             }
         });
     });
