@@ -3,7 +3,13 @@ $.fn.svgToInline = function (options) {
     'use strict';
 
     var trigger = {
-        class: this.selector.replace('.', ''),
+        class: function() {
+            if(jQuery.fn.jquery.match(/^(1|2)/)) {
+                return this.selector.replace('.', '');
+            } else {
+                return $(this).attr('class');
+            }
+        },
         useClass: options && options.useTriggerClass || false
     };
 
@@ -20,10 +26,10 @@ $.fn.svgToInline = function (options) {
                 svgTagWithoutClass: ''
             },
             inputClass = $(this).attr('class').split(' '),
-            inputClassLenght = inputClass.length;
+            inputClassLength = inputClass.length;
 
-        if (inputClassLenght > 0) {
-            for (var i = 0; i < inputClassLenght; ++i) {
+        if (inputClassLength > 0) {
+            for (var i = 0; i < inputClassLength; ++i) {
                 var space = '';
 
                 if (inputClass[i] === trigger.class && !trigger.useClass) { continue; }
